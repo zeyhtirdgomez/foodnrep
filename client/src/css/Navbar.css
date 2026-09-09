@@ -1,0 +1,132 @@
+/* =========================
+   Global Reset
+========================= */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+#root {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================
+   Navbar
+========================= */
+
+.navbar {
+    width: 100%;
+    min-height: 70px;
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 40px;
+
+    background: #0F2645;
+    border-bottom: 1px solid rgba(199, 161, 82, 0.25);
+}
+
+/* =========================
+   Brand
+========================= */
+
+.navbar-brand a {
+    color: white;
+    text-decoration: none;
+
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+
+    transition: 0.2s ease;
+}
+
+.navbar-brand a:hover {
+    color: #C7A152;
+}
+
+/* =========================
+   Navigation Links
+========================= */
+
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar-links a,
+.navbar-links button {
+    padding: 9px 15px;
+
+    border: none;
+    border-radius: 7px;
+
+    background: transparent;
+    color: rgba(255, 255, 255, 0.85);
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+
+    text-decoration: none;
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.navbar-links a:hover {
+    background: rgba(199, 161, 82, 0.12);
+    color: #C7A152;
+}
+
+/* =========================
+   Logout
+========================= */
+
+.navbar-links button {
+    margin-left: 5px;
+
+    background: #C7A152;
+    color: white;
+}
+
+.navbar-links button:hover {
+    background: #b28e43;
+    transform: translateY(-1px);
+}
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 600px) {
+    .navbar {
+        padding: 0 20px;
+    }
+
+    .navbar-brand a {
+        font-size: 19px;
+    }
+
+    .navbar-links {
+        gap: 2px;
+    }
+
+    .navbar-links a,
+    .navbar-links button {
+        padding: 8px 9px;
+        font-size: 13px;
+    }
+}

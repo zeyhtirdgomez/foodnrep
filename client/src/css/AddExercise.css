@@ -1,0 +1,221 @@
+/* =========================
+   Global Reset
+========================= */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+#root {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================
+   Add Exercise Page
+========================= */
+
+.add-exercise {
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+
+    background: #f4f6f8;
+}
+
+/* =========================
+   Page Heading
+========================= */
+
+.add-exercise > h1 {
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+
+    margin: 0 auto;
+    padding: 40px 40px 25px;
+
+    color: #0F2645;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+/* =========================
+   Form
+========================= */
+
+.add-exercise form {
+    width: calc(100% - 80px);
+    max-width: 600px;
+    box-sizing: border-box;
+
+    margin: 0 auto 40px;
+    padding: 32px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+    background: white;
+    border-radius: 16px;
+
+    box-shadow: 0 5px 20px rgba(15, 38, 69, 0.08);
+}
+
+/* =========================
+   Form Groups
+========================= */
+
+.add-exercise form > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.add-exercise label {
+    margin-bottom: 7px;
+
+    color: #0F2645;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* =========================
+   Inputs & Select
+========================= */
+
+.add-exercise input,
+.add-exercise select {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 12px 14px;
+
+    border: 1px solid #d5d9df;
+    border-radius: 8px;
+
+    background: #f8f9fb;
+    color: #0F2645;
+
+    font-family: inherit;
+    font-size: 15px;
+
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.add-exercise input:focus,
+.add-exercise select:focus {
+    border-color: #C7A152;
+    background: white;
+
+    box-shadow: 0 0 0 3px rgba(199, 161, 82, 0.15);
+}
+
+/* =========================
+   Select
+========================= */
+
+.add-exercise select {
+    cursor: pointer;
+}
+
+/* =========================
+   Error
+========================= */
+
+.add-exercise .error {
+    margin: -5px 0 0;
+
+    color: #B6212B;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* =========================
+   Buttons
+========================= */
+
+.add-exercise form > button {
+    width: 100%;
+
+    padding: 12px 16px;
+
+    border-radius: 8px;
+
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+/* Add Exercise */
+
+.add-exercise form > button[type="submit"] {
+    margin-top: 5px;
+
+    border: none;
+
+    background: #C7A152;
+    color: white;
+}
+
+.add-exercise form > button[type="submit"]:hover {
+    background: #b28e43;
+    transform: translateY(-1px);
+}
+
+.add-exercise form > button[type="submit"]:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Cancel */
+
+.add-exercise form > button[type="button"] {
+    border: 1px solid #d5d9df;
+
+    background: white;
+    color: #64748b;
+}
+
+.add-exercise form > button[type="button"]:hover {
+    border-color: #0F2645;
+    color: #0F2645;
+}
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 650px) {
+
+    .add-exercise > h1 {
+        padding: 30px 20px 20px;
+        font-size: 27px;
+    }
+
+    .add-exercise form {
+        width: calc(100% - 40px);
+
+        padding: 24px;
+    }
+}
+
+@media (max-width: 400px) {
+
+    .add-exercise form {
+        width: calc(100% - 30px);
+        padding: 20px;
+    }
+}
+

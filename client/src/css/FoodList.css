@@ -1,0 +1,197 @@
+/* =========================
+   Global Reset
+========================= */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+#root {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================
+   Food List Page
+========================= */
+
+.food-list {
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+
+    background: #f4f6f8;
+}
+
+/* =========================
+   Header
+========================= */
+
+.food-list-header {
+    width: 100%;
+    max-width: 1200px;
+    box-sizing: border-box;
+
+    margin: 0 auto;
+    padding: 40px 40px 20px;
+}
+
+.food-list-header h1 {
+    margin: 0;
+
+    color: #0F2645;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+/* =========================
+   Add Options
+========================= */
+
+.food-add-options {
+    width: 100%;
+    max-width: 1200px;
+    box-sizing: border-box;
+
+    margin: 0 auto;
+    padding: 0 40px 25px;
+
+    display: flex;
+    gap: 12px;
+}
+
+.food-add-options button {
+    padding: 11px 18px;
+
+    border-radius: 8px;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+/* Manual Add */
+
+.food-add-options button:first-child {
+    border: 1px solid #C7A152;
+
+    background: #C7A152;
+    color: white;
+}
+
+.food-add-options button:first-child:hover {
+    background: #b28e43;
+    transform: translateY(-1px);
+}
+
+/* Auto Add */
+
+.food-add-options button:last-child {
+    border: 1px solid #0F2645;
+
+    background: white;
+    color: #0F2645;
+}
+
+.food-add-options button:last-child:hover {
+    background: #0F2645;
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* =========================
+   Loading / Error / Empty
+========================= */
+
+.food-list > p {
+    max-width: 1200px;
+    box-sizing: border-box;
+
+    margin: 0 auto;
+    padding: 10px 40px;
+
+    color: #64748b;
+    font-size: 15px;
+}
+
+.food-list > .error {
+    color: #B6212B;
+}
+
+/* =========================
+   Food Cards
+========================= */
+
+.food-list-container {
+    width: 100%;
+    max-width: 1200px;
+    box-sizing: border-box;
+
+    margin: 0 auto;
+    padding: 0 40px 40px;
+
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 900px) {
+    .food-list-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+
+    .food-list-header {
+        padding: 30px 20px 20px;
+    }
+
+    .food-list-header h1 {
+        font-size: 26px;
+    }
+
+    .food-add-options {
+        padding: 0 20px 20px;
+    }
+
+    .food-add-options button {
+        flex: 1;
+    }
+
+    .food-list > p {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .food-list-container {
+        grid-template-columns: 1fr;
+
+        padding: 0 20px 30px;
+    }
+}
+
+@media (max-width: 400px) {
+
+    .food-add-options {
+        flex-direction: column;
+    }
+
+    .food-add-options button {
+        width: 100%;
+    }
+}

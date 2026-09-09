@@ -1,0 +1,203 @@
+/* =========================
+   Global Reset
+========================= */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+#root {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================
+   Register Page
+========================= */
+
+.register-container {
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background: #0F2645;
+    padding: 40px 20px;
+}
+
+/* =========================
+   Register Card
+========================= */
+
+.register-container h1 {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 0 25px;
+
+    color: white;
+    font-size: 36px;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* =========================
+   Form
+========================= */
+
+.register-container form {
+    width: 100%;
+    max-width: 420px;
+
+    box-sizing: border-box;
+    padding: 35px;
+
+    background: white;
+    border-radius: 16px;
+
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* =========================
+   Form Groups
+========================= */
+
+.register-container form > div {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 18px;
+}
+
+.register-container label {
+    margin-bottom: 7px;
+
+    color: #0F2645;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.register-container input {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 12px 14px;
+
+    border: 1px solid #d5d9df;
+    border-radius: 8px;
+
+    background: #f8f9fb;
+    color: #0F2645;
+
+    font-size: 15px;
+
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.register-container input:focus {
+    border-color: #C7A152;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(199, 161, 82, 0.15);
+}
+
+/* =========================
+   Error
+========================= */
+
+.register-container .error {
+    margin: 5px 0 15px;
+
+    color: #B6212B;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* =========================
+   Register Button
+========================= */
+
+.register-container form > button {
+    width: 100%;
+
+    padding: 13px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #C7A152;
+    color: white;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.register-container form > button:hover {
+    background: #b28e43;
+    transform: translateY(-1px);
+}
+
+.register-container form > button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* =========================
+   Login
+========================= */
+
+.register-container > p {
+    margin-top: 20px;
+
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    text-align: center;
+}
+
+.register-container > p button {
+    padding: 0;
+
+    border: none;
+    background: none;
+
+    color: #C7A152;
+    font-size: inherit;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.register-container > p button:hover {
+    text-decoration: underline;
+}
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 500px) {
+    .register-container {
+        padding: 25px 15px;
+    }
+
+    .register-container h1 {
+        font-size: 30px;
+    }
+
+    .register-container form {
+        padding: 25px 20px;
+    }
+}

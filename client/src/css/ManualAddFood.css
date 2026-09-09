@@ -1,0 +1,164 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+#root {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.manual-add-food {
+    min-height: 100vh;
+    background: #f4f6f8;
+    color: #0F2645;
+}
+
+/* Main content */
+.manual-add-food > h1 {
+    max-width: 600px;
+    margin: 45px auto 25px;
+    padding: 0 24px;
+
+    font-size: 32px;
+    font-weight: 700;
+    color: #0F2645;
+}
+
+/* Form card */
+.manual-add-food form {
+    width: calc(100% - 48px);
+    max-width: 600px;
+    margin: 0 auto 50px;
+
+    padding: 32px;
+
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+
+    box-shadow: 0 8px 25px rgba(15, 38, 69, 0.08);
+
+    box-sizing: border-box;
+}
+
+/* Form fields */
+.manual-add-food form > div:not(.error) {
+    margin-bottom: 20px;
+}
+
+.manual-add-food label {
+    display: block;
+    margin-bottom: 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+    color: #0F2645;
+}
+
+.manual-add-food input {
+    width: 100%;
+    padding: 13px 14px;
+
+    font-size: 15px;
+    font-family: inherit;
+
+    color: #0F2645;
+    background: #ffffff;
+
+    border: 1px solid #d5dbe2;
+    border-radius: 9px;
+
+    outline: none;
+    box-sizing: border-box;
+
+    transition: 0.2s ease;
+}
+
+.manual-add-food input:focus {
+    border-color: #C7A152;
+    box-shadow: 0 0 0 3px rgba(199, 161, 82, 0.15);
+}
+
+/* Error */
+.manual-add-food .error {
+    margin: 10px 0 18px;
+    padding: 12px 14px;
+
+    color: #B6212B;
+    background: rgba(182, 33, 43, 0.08);
+
+    border-left: 4px solid #B6212B;
+    border-radius: 6px;
+
+    font-size: 14px;
+}
+
+/* Buttons */
+.manual-add-food button {
+    padding: 12px 20px;
+
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+
+    border-radius: 9px;
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+/* Add Food */
+.manual-add-food button[type="submit"] {
+    width: 100%;
+
+    color: #ffffff;
+    background: #C7A152;
+
+    border: 2px solid #C7A152;
+}
+
+.manual-add-food button[type="submit"]:hover {
+    background: #b18c43;
+    border-color: #b18c43;
+}
+
+.manual-add-food button[type="submit"]:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+/* Cancel */
+.manual-add-food button[type="button"] {
+    width: 100%;
+    margin-top: 10px;
+
+    color: #0F2645;
+    background: #ffffff;
+
+    border: 2px solid #0F2645;
+}
+
+.manual-add-food button[type="button"]:hover {
+    color: #ffffff;
+    background: #0F2645;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .manual-add-food > h1 {
+        margin-top: 30px;
+        font-size: 27px;
+    }
+
+    .manual-add-food form {
+        width: calc(100% - 32px);
+        padding: 24px 20px;
+    }
+}

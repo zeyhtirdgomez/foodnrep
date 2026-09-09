@@ -1,0 +1,130 @@
+/* =========================
+   Global Reset
+========================= */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+#root {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================
+   Food Card
+========================= */
+
+.food-card {
+    position: relative;
+
+    width: 100%;
+    min-height: 190px;
+    box-sizing: border-box;
+
+    padding: 24px;
+
+    display: flex;
+    flex-direction: column;
+
+    background: white;
+    border-radius: 14px;
+
+    border: 1px solid #e5e7eb;
+
+    box-shadow: 0 4px 15px rgba(15, 38, 69, 0.07);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.food-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow: 0 8px 25px rgba(15, 38, 69, 0.12);
+}
+
+/* =========================
+   Food Name
+========================= */
+
+.food-card h2 {
+    margin: 0 0 18px;
+
+    color: #0F2645;
+
+    font-size: 21px;
+    font-weight: 700;
+}
+
+/* =========================
+   Food Information
+========================= */
+
+.food-card p {
+    margin: 5px 0;
+
+    color: #64748b;
+
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Highlight Calories */
+
+.food-card p:last-of-type {
+    color: #0F2645;
+    font-weight: 600;
+}
+
+/* =========================
+   Delete Button
+========================= */
+
+.food-card button {
+    margin-top: auto;
+    padding: 9px 14px;
+
+    border: 1px solid #B6212B;
+    border-radius: 7px;
+
+    background: transparent;
+    color: #B6212B;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.food-card button:hover {
+    background: #B6212B;
+    color: white;
+}
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 500px) {
+
+    .food-card {
+        min-height: 175px;
+        padding: 20px;
+    }
+
+    .food-card h2 {
+        font-size: 19px;
+    }
+}

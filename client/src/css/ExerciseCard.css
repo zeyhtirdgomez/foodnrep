@@ -1,0 +1,127 @@
+/* =========================
+   Global Reset
+========================= */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+#root {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================
+   Exercise Card
+========================= */
+
+.exercise-card {
+    position: relative;
+
+    width: 100%;
+    min-height: 220px;
+    box-sizing: border-box;
+
+    padding: 24px;
+
+    display: flex;
+    flex-direction: column;
+
+    background: white;
+    border-radius: 14px;
+
+    border: 1px solid #e5e7eb;
+
+    box-shadow: 0 4px 15px rgba(15, 38, 69, 0.07);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.exercise-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow: 0 8px 25px rgba(15, 38, 69, 0.12);
+}
+
+/* =========================
+   Exercise Name
+========================= */
+
+.exercise-card h2 {
+    margin: 0 0 18px;
+
+    color: #0F2645;
+
+    font-size: 21px;
+    font-weight: 700;
+}
+
+/* =========================
+   Exercise Information
+========================= */
+
+.exercise-card p {
+    margin: 5px 0;
+
+    color: #64748b;
+
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.exercise-card p:first-of-type {
+    margin-top: 0;
+}
+
+/* =========================
+   Delete Button
+========================= */
+
+.exercise-card button {
+    margin-top: auto;
+    padding: 9px 14px;
+
+    border: 1px solid #B6212B;
+    border-radius: 7px;
+
+    background: transparent;
+    color: #B6212B;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.exercise-card button:hover {
+    background: #B6212B;
+    color: white;
+}
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 500px) {
+    .exercise-card {
+        min-height: 200px;
+        padding: 20px;
+    }
+
+    .exercise-card h2 {
+        font-size: 19px;
+    }
+}
+

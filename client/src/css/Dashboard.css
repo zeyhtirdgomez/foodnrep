@@ -1,0 +1,221 @@
+/* =========================
+   Global Reset
+========================= */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+#root {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================
+   Dashboard
+========================= */
+
+.dashboard {
+    width: 100%;
+    min-height: 100vh;
+    background: #f4f6f8;
+}
+
+/* =========================
+   Main Content
+========================= */
+
+.dashboard-content {
+    width: 100%;
+    max-width: 1200px;
+    box-sizing: border-box;
+
+    margin: 0 auto;
+    padding: 40px;
+}
+
+.dashboard-content > h1 {
+    margin: 0 0 30px;
+
+    color: #0F2645;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+/* =========================
+   Error
+========================= */
+
+.dashboard-content .error {
+    margin: 0 0 20px;
+
+    padding: 12px 16px;
+
+    border-radius: 8px;
+
+    background: #fdebec;
+    color: #B6212B;
+
+    font-size: 14px;
+}
+
+/* =========================
+   Summary Cards
+========================= */
+
+.summary-cards {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 24px;
+
+    margin-bottom: 30px;
+}
+
+.summary-card {
+    position: relative;
+
+    min-height: 170px;
+    box-sizing: border-box;
+
+    padding: 28px;
+
+    background: white;
+    border-radius: 16px;
+
+    box-shadow: 0 5px 20px rgba(15, 38, 69, 0.08);
+
+    overflow: hidden;
+}
+
+.summary-card::before {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 5px;
+    height: 100%;
+
+    background: #C7A152;
+}
+
+.summary-card h2 {
+    margin: 0 0 18px;
+
+    color: #64748b;
+
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.summary-card p {
+    margin: 0;
+
+    color: #0F2645;
+
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.summary-card span {
+    display: block;
+
+    margin-top: 10px;
+
+    color: #94a3b8;
+
+    font-size: 14px;
+}
+
+/* =========================
+   Monthly Activity
+========================= */
+
+.monthly-activity {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 28px;
+
+    background: white;
+    border-radius: 16px;
+
+    box-shadow: 0 5px 20px rgba(15, 38, 69, 0.08);
+}
+
+.monthly-activity > h2 {
+    margin: 0 0 25px;
+
+    color: #0F2645;
+
+    font-size: 21px;
+    font-weight: 700;
+}
+
+/* =========================
+   Chart
+========================= */
+
+.chart-container {
+    width: 100%;
+    min-height: 400px;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 768px) {
+
+    .dashboard-content {
+        padding: 30px 20px;
+    }
+
+    .dashboard-content > h1 {
+        font-size: 28px;
+    }
+
+    .summary-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .monthly-activity {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .dashboard-content {
+        padding: 25px 15px;
+    }
+
+    .summary-card {
+        min-height: 150px;
+        padding: 22px;
+    }
+
+    .summary-card p {
+        font-size: 36px;
+    }
+
+    .monthly-activity {
+        padding: 15px;
+    }
+
+    .chart-container {
+        min-height: 300px;
+    }
+}
