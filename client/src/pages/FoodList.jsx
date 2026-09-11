@@ -13,18 +13,22 @@ const FoodList = () => {
     const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
     const [foods, setFoods] = useState([]);
+    const [date, setDate] = useState("");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
-    const fetchFoods = async () => {
+    const fetchFoods = async (date = "") => {
         try {
             setLoading(true);
             setError("");
 
             const token = localStorage.getItem("token");
 
+            const url = date === "" ?
+                `${VITE_BACKEND_URL}/api/foods`:
+                `${VITE_BACKEND_URL}/api/foods/?date=${date}`
             const response = await axios.get(
-                `${VITE_BACKEND_URL}/api/foods`,
+                url,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -78,8 +82,17 @@ const FoodList = () => {
             <Navbar />
 
             <div className="food-list-header">
-                <h1>Today's Food</h1>
-
+                
+                <div className='header'>
+                    <h1>Today's Food</h1>
+                    <div>
+                        <input type="date"
+                            value={date}
+                            onChange={e => setDate(e.target.value)}
+                        />
+                        <button onClick={() => fetchFoods(date)} />
+                    </div>   
+                </div>
             </div>
 
             <div className="food-add-options">
@@ -103,7 +116,7 @@ const FoodList = () => {
             {error && <p className="error">{error}</p>}
 
             {!loading && foods.length === 0 && (
-                <p>No food recorded today.</p>
+                <p>No food recorded.</p>
             )}
 
             <div className="food-list-container">

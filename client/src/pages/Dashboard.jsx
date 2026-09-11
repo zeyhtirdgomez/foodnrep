@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -70,7 +71,7 @@ const Dashboard = () => {
         } catch (error) {
             if (error.response?.status === 401) {
                 localStorage.removeItem("token");
-                navigate("/login");
+                navigate("/");
                 return;
             }
 
@@ -96,7 +97,13 @@ const Dashboard = () => {
                 }
             );
 
-            setMonthlyData(response.data);
+            
+            if (Array.isArray(response.data))
+                setMonthlyData(response.data);
+            else if (response.data && Array.isArray(response.data.data))
+                setMonthlyData(response.data.data);
+            else 
+                setMonthlyData([]);
 
         } catch (error) {
             setError(
@@ -108,7 +115,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         if (!token) {
-            navigate("/login");
+            navigate("/");
             return;
         }
 
@@ -161,7 +168,7 @@ const Dashboard = () => {
 
                     <div className="chart-container">
                         <ResponsiveContainer width="100%" height={400}>
-                            <LineChart data={monthlyData}>
+                            <LineChart data={Array.isArray(monthlyData) ? monthlyData : []}>
                                 <CartesianGrid strokeDasharray="3 3" />
 
                                 <XAxis

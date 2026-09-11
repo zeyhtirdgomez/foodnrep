@@ -13,18 +13,24 @@ const ExerciseList = () => {
     const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
     const [exercises, setExercises] = useState([]);
+    const [date, setDate] = useState("");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
-    const fetchExercises = async () => {
+
+    const fetchExercises = async (date = "") => {
         try {
             setLoading(true);
             setError("");
 
             const token = localStorage.getItem("token");
 
+            const url = 
+                date === "" ? `${VITE_BACKEND_URL}/api/exercises`: 
+                `${VITE_BACKEND_URL}/api/exercises/?date=${date}`;
+
             const response = await axios.get(
-                `${VITE_BACKEND_URL}/api/exercises`,
+                url,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -76,9 +82,19 @@ const ExerciseList = () => {
     return (
         <div className="exercise-list">
             <Navbar />
-
+            
             <div className="exercise-list-header">
-                <h1>Today's Exercises</h1>
+                
+                <div className='header'>
+                    <h1>Today's Exercises</h1>
+                    <div>
+                        <input type="date"
+                            value={date}
+                            onChange={e => setDate(e.target.value)}
+                        />
+                        <button onClick={() => fetchExercises(date)} />
+                    </div>     
+                </div>
 
                 <button onClick={() => navigate("/exercises/add")}>
                     Add Exercise
@@ -90,7 +106,7 @@ const ExerciseList = () => {
             {error && <p className="error">{error}</p>}
 
             {!loading && exercises.length === 0 && (
-                <p>No exercises recorded today.</p>
+                <p>No exercises recorded.</p>
             )}
 
             <div className="exercise-list-container">

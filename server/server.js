@@ -11,6 +11,7 @@ import authRouter from './src/routes/authRoutes.js';
 import exerciseRouter from './src/routes/exerciseRoutes.js';
 import foodRouter from './src/routes/foodRoutes.js';
 import dashboardRouter from './src/routes/dashboardRoutes.js';
+import workoutRouter from './src/routes/workoutRoutes.js';
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/exercises', exerciseRouter);
 app.use('/api/foods', foodRouter);
 app.use('/api/dashboard', dashboardRouter);
+app.use('/api/workout', workoutRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);

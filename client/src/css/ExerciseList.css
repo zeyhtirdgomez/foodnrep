@@ -11,6 +11,12 @@ body {
     box-sizing: border-box;
 }
 
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
 #root {
     width: 100%;
     min-height: 100vh;
@@ -25,43 +31,169 @@ body {
 .exercise-list {
     width: 100%;
     min-height: 100vh;
-    box-sizing: border-box;
 
     background: #f4f6f8;
+    color: #0F2645;
 }
 
 /* =========================
-   Header
+   Header Section
 ========================= */
 
 .exercise-list-header {
     width: 100%;
     max-width: 1200px;
-    box-sizing: border-box;
 
     margin: 0 auto;
     padding: 40px 40px 25px;
 
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
-    gap: 20px;
+
+    gap: 30px;
 }
 
-.exercise-list-header h1 {
+/* =========================
+   Title + Date
+========================= */
+
+.header {
+    display: flex;
+    align-items: flex-end;
+    gap: 25px;
+}
+
+.header h1 {
     margin: 0;
 
     color: #0F2645;
 
     font-size: 30px;
+    line-height: 1.2;
     font-weight: 700;
+}
+
+/* =========================
+   Date Picker
+========================= */
+
+.header > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.header input[type="date"] {
+    height: 40px;
+
+    padding: 0 12px;
+
+    border: 1px solid #d5dbe2;
+    border-radius: 7px;
+
+    background: white;
+    color: #0F2645;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    outline: none;
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.header input[type="date"]:hover {
+    border-color: #C7A152;
+}
+
+.header input[type="date"]:focus {
+    border-color: #C7A152;
+
+    box-shadow: 0 0 0 3px rgba(199, 161, 82, 0.15);
+}
+
+/* =========================
+   Date Search Button
+========================= */
+
+.header button {
+    width: 40px;
+    height: 40px;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 7px;
+
+    background: #0F2645;
+
+    cursor: pointer;
+
+    position: relative;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+/* Magnifying glass icon */
+
+.header button::before {
+    content: "";
+
+    position: absolute;
+
+    width: 13px;
+    height: 13px;
+
+    border: 2px solid white;
+    border-radius: 50%;
+
+    top: 11px;
+    left: 11px;
+}
+
+.header button::after {
+    content: "";
+
+    position: absolute;
+
+    width: 8px;
+    height: 2px;
+
+    background: white;
+
+    transform: rotate(45deg);
+
+    top: 26px;
+    left: 24px;
+
+    border-radius: 2px;
+}
+
+.header button:hover {
+    background: #17375f;
+    transform: translateY(-1px);
+}
+
+.header button:active {
+    transform: translateY(0);
 }
 
 /* =========================
    Add Exercise Button
 ========================= */
 
-.exercise-list-header button {
+/*
+   Direct child button of .exercise-list-header
+   so it doesn't affect the date search button.
+*/
+
+.exercise-list-header > button {
     padding: 11px 18px;
 
     border: none;
@@ -74,32 +206,48 @@ body {
     font-size: 14px;
     font-weight: 700;
 
+    white-space: nowrap;
+
     cursor: pointer;
-    transition: 0.2s ease;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-.exercise-list-header button:hover {
+.exercise-list-header > button:hover {
     background: #b28e43;
+
     transform: translateY(-1px);
+
+    box-shadow: 0 4px 10px rgba(15, 38, 69, 0.12);
+}
+
+.exercise-list-header > button:active {
+    transform: translateY(0);
 }
 
 /* =========================
-   Loading / Empty State
+   Loading / Empty / Error
 ========================= */
 
 .exercise-list > p {
+    width: 100%;
     max-width: 1200px;
-    box-sizing: border-box;
 
     margin: 0 auto;
     padding: 10px 40px;
 
     color: #64748b;
+
     font-size: 15px;
+    line-height: 1.5;
 }
 
 .exercise-list > .error {
     color: #B6212B;
+    font-weight: 500;
 }
 
 /* =========================
@@ -109,40 +257,91 @@ body {
 .exercise-list-container {
     width: 100%;
     max-width: 1200px;
-    box-sizing: border-box;
 
     margin: 0 auto;
     padding: 0 40px 40px;
 
     display: grid;
+
     grid-template-columns: repeat(3, minmax(0, 1fr));
+
     gap: 20px;
 }
 
 /* =========================
-   Responsive
+   Responsive - Tablet
 ========================= */
 
-@media (max-width: 900px) {
+@media (max-width: 950px) {
+
+    .exercise-list-header {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
     .exercise-list-container {
+        padding-left: 30px;
+        padding-right: 30px;
+
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .exercise-list > p {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .header {
+        gap: 15px;
+    }
+
+    .header h1 {
+        font-size: 27px;
     }
 }
 
-@media (max-width: 650px) {
+/* =========================
+   Responsive - Mobile
+========================= */
+
+@media (max-width: 700px) {
 
     .exercise-list-header {
         padding: 30px 20px 20px;
 
-        align-items: flex-start;
+        align-items: stretch;
         flex-direction: column;
+
+        gap: 20px;
     }
 
-    .exercise-list-header h1 {
+    .header {
+        width: 100%;
+
+        align-items: stretch;
+        flex-direction: column;
+
+        gap: 15px;
+    }
+
+    .header h1 {
         font-size: 26px;
     }
 
-    .exercise-list-header button {
+    .header > div {
+        width: 100%;
+    }
+
+    .header input[type="date"] {
+        flex: 1;
+        width: 100%;
+    }
+
+    .header button {
+        flex-shrink: 0;
+    }
+
+    .exercise-list-header > button {
         width: 100%;
     }
 
@@ -155,5 +354,35 @@ body {
         grid-template-columns: 1fr;
 
         padding: 0 20px 30px;
+
+        gap: 15px;
+    }
+}
+
+/* =========================
+   Small Mobile
+========================= */
+
+@media (max-width: 400px) {
+
+    .exercise-list-header {
+        padding-top: 25px;
+    }
+
+    .header h1 {
+        font-size: 23px;
+    }
+
+    .header > div {
+        gap: 6px;
+    }
+
+    .header input[type="date"] {
+        font-size: 13px;
+    }
+
+    .header button {
+        width: 38px;
+        height: 38px;
     }
 }

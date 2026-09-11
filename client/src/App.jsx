@@ -11,6 +11,8 @@ import FoodList from "./pages/FoodList";
 import ManualAddFood from "./pages/ManualAddFood";
 import AutoAddFood from "./pages/AutoAddFood";
 
+import Workout from "./pages/Workout";
+
 function App() {
     return (
         <BrowserRouter>
@@ -28,6 +30,7 @@ function App() {
                 <Route path="/foods/manual-add" element={<ManualAddFood />} />
                 <Route path="/foods/auto-add" element={<AutoAddFood />} />
 
+                <Route path="/workout" element={<Workout />} />
             </Routes>
         </BrowserRouter>
     );
