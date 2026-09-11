@@ -1,6 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react-hooks/set-state-in-effect */
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import axios from "axios";
 
 import Navbar from "../components/Navbar";
@@ -75,10 +73,6 @@ const Workout = () => {
     }
   };
 
-  useEffect(() => {
-    getWorkouts();
-  }, []);
-
   const handleSearch = () => {
     const filters = {};
 
@@ -101,8 +95,6 @@ const Workout = () => {
     setType("");
     setMuscle("");
     setDifficulty("");
-
-    getWorkouts();
   };
 
   const formatText = (text) => {
