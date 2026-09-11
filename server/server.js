@@ -31,6 +31,11 @@ app.use('/api/foods', foodRouter);
 app.use('/api/dashboard', dashboardRouter);
 app.use('/api/workout', workoutRouter);
 
+
+app.use('/', (req, res) => {
+    return res.status(200).json({message : 'Running'});
+})
+
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
 
