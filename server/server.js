@@ -40,10 +40,21 @@ app.use(notFoundMiddleware);
 app.use(errorMiddleware);
 
 const startServer = async () => {
-    await connect();
-    app.listen(PORT, () => {
-        console.log('Server is running.')
-    });
-}
+    try {
+        console.log('Connecting to MongoDB...');
+
+        await connect();
+
+        console.log('MongoDB connected.');
+
+        app.listen(PORT, '0.0.0.0', () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+    } catch (error) {
+        console.error('SERVER STARTUP ERROR:');
+        console.error(error);
+        process.exit(1);
+    }
+};
 
 startServer();
