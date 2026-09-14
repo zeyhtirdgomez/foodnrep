@@ -29,6 +29,7 @@ const ExerciseList = () => {
                 date === "" ? `${VITE_BACKEND_URL}/api/exercises`: 
                 `${VITE_BACKEND_URL}/api/exercises/?date=${date}`;
 
+            
             const response = await axios.get(
                 url,
                 {
@@ -37,6 +38,9 @@ const ExerciseList = () => {
                     }
                 }
             );
+
+            console.log("response.data:", response.data);
+            console.log("is array:", Array.isArray(response.data));
 
             setExercises(response.data.exercises);
 
