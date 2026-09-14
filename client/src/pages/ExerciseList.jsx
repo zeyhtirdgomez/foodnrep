@@ -42,7 +42,7 @@ const ExerciseList = () => {
             console.log("response.data:", response.data);
             console.log("is array:", Array.isArray(response.data));
 
-            setExercises(response.data.exercises);
+            setExercises(response.data);
 
         } catch (error) {
             setError(
