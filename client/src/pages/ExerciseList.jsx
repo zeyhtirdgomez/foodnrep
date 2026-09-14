@@ -38,7 +38,7 @@ const ExerciseList = () => {
                 }
             );
 
-            setExercises(response.data);
+            setExercises(response.data.exercises);
 
         } catch (error) {
             setError(
