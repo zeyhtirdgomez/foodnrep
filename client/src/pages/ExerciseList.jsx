@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios, { getFirebaseIdToken } from "../api";
 import { useNavigate } from "react-router-dom";
 
 import ExerciseCard from "../components/ExerciseCard";
@@ -23,7 +23,7 @@ const ExerciseList = () => {
             setLoading(true);
             setError("");
 
-            const token = localStorage.getItem("token");
+            const token = await getFirebaseIdToken();
 
             const url = 
                 date === "" ? `${VITE_BACKEND_URL}/api/exercises`: 
@@ -57,7 +57,7 @@ const ExerciseList = () => {
 
     const handleDelete = async (id) => {
         try {
-            const token = localStorage.getItem("token");
+            const token = await getFirebaseIdToken();
 
             await axios.delete(
                 `${VITE_BACKEND_URL}/api/exercises/${id}`,
@@ -87,18 +87,22 @@ const ExerciseList = () => {
             <div className="exercise-list-header">
                 
                 <div className='header'>
-                    <h1>Today's Exercises</h1>
                     <div>
+                        <h1>Move in your own way.</h1>
+                    </div>
+                    <div>
+                        <label className="visually-hidden" htmlFor="exercise-date">Filter exercise by date</label>
                         <input type="date"
+                            id="exercise-date"
                             value={date}
                             onChange={e => setDate(e.target.value)}
                         />
-                        <button onClick={() => fetchExercises(date)} />
+                        <button onClick={() => fetchExercises(date)}>Show date</button>
                     </div>     
                 </div>
 
                 <button onClick={() => navigate("/exercises/add")}>
-                    Add Exercise
+                    <span aria-hidden="true">+</span> Add exercise
                 </button>
             </div>
 

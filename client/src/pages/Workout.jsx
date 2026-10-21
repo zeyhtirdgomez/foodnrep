@@ -1,5 +1,5 @@
 import {useState } from "react";
-import axios from "axios";
+import axios, { getFirebaseIdToken } from "../api";
 
 import Navbar from "../components/Navbar";
 import WorkoutCard from "../components/WorkoutCard";
@@ -56,7 +56,7 @@ const Workout = () => {
       setLoading(true);
       setError("");
       
-      const token = localStorage.getItem('token');
+      const token = await getFirebaseIdToken();
 
       const response = await axios.get(`${BACKEND_URL}/api/workout`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -95,6 +95,7 @@ const Workout = () => {
     setType("");
     setMuscle("");
     setDifficulty("");
+    getWorkouts({});
   };
 
   const formatText = (text) => {
@@ -218,7 +219,7 @@ const Workout = () => {
               onClick={handleReset}
               disabled={loading}
             >
-              Reset
+              Clear filters
             </button>
           </div>
 

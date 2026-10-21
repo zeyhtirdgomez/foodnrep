@@ -1,38 +1,40 @@
-import jwt from 'jsonwebtoken';
+import User from "../models/User.js";
+import firebaseTokenMiddleware from "./firebaseTokenMiddleware.js";
 
 const authMiddleware = (req, res, next) => {
-    const authorization = req.headers.authorization;
+    firebaseTokenMiddleware(req, res, async (error) => {
+        if (error) return next(error);
 
-    if (!authorization) {
-        return res.status(401).json({
-            message: 'Unauthorized'
-        });
-    }
+        if (!req.firebaseUser.email_verified) {
+            return res.status(403).json({
+                code: "EMAIL_VERIFICATION_REQUIRED",
+                message: "Verify your email address before accessing FoodnRep."
+            });
+        }
 
-    const parts = authorization.split(" ");
-    const token = parts[0] === 'Bearer' ? parts[1] : null;
+        try {
+            const user = await User.findOne({
+                firebaseUid: req.firebaseUser.uid
+            });
 
-    if (!token) {
-        return res.status(401).json({
-            message: 'Unauthorized'
-        });
-    }
+            if (!user) {
+                return res.status(403).json({
+                    code: "PROFILE_SETUP_REQUIRED",
+                    message: "Complete your FoodnRep profile to continue."
+                });
+            }
 
-    try {
-        const verify = jwt.verify(
-            token,
-            process.env.JWT_SECRET
-        );
+            req.user = {
+                id: user._id.toString(),
+                uid: req.firebaseUser.uid,
+                email: req.firebaseUser.email
+            };
 
-        req.user = verify;
-
-        next();
-
-    } catch (error) {
-        return res.status(401).json({
-            message: 'Invalid or expired token'
-        });
-    }
+            return next();
+        } catch (lookupError) {
+            return next(lookupError);
+        }
+    });
 };
 
 export default authMiddleware;

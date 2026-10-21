@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import axios, { getFirebaseIdToken } from "../api";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
@@ -31,7 +31,7 @@ const AutoAddFood = () => {
         setLoading(true);
 
         try {
-            const token = localStorage.getItem("token");
+            const token = await getFirebaseIdToken();
 
             await axios.post(
                 `${VITE_BACKEND_URL}/api/foods`,

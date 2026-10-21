@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import { AuthProvider } from "./context/AuthProvider";
+import { RequireAuth } from "./components/AuthRoutes";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
@@ -16,22 +18,23 @@ import Workout from "./pages/Workout";
 function App() {
     return (
         <BrowserRouter>
-            <Routes>
+            <AuthProvider>
+                <Routes>
+                    <Route path="/" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
 
-                <Route path="/" element={<Login />} />
-                <Route path="/register" element={<Register />} />
+                    <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
 
-                <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/exercises" element={<RequireAuth><ExerciseList /></RequireAuth>} />
+                    <Route path="/exercises/add" element={<RequireAuth><AddExercise /></RequireAuth>} />
 
-                <Route path="/exercises" element={<ExerciseList />} />
-                <Route path="/exercises/add" element={<AddExercise />} />
+                    <Route path="/foods" element={<RequireAuth><FoodList /></RequireAuth>} />
+                    <Route path="/foods/manual-add" element={<RequireAuth><ManualAddFood /></RequireAuth>} />
+                    <Route path="/foods/auto-add" element={<RequireAuth><AutoAddFood /></RequireAuth>} />
 
-                <Route path="/foods" element={<FoodList />} />
-                <Route path="/foods/manual-add" element={<ManualAddFood />} />
-                <Route path="/foods/auto-add" element={<AutoAddFood />} />
-
-                <Route path="/workout" element={<Workout />} />
-            </Routes>
+                    <Route path="/workout" element={<RequireAuth><Workout /></RequireAuth>} />
+                </Routes>
+            </AuthProvider>
         </BrowserRouter>
     );
 }

@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
+    firebaseUid : {
+        type : String,
+        unique : true,
+        sparse : true
+    },
     name : {
         type : String,
         required : [true, 'Name is required']
@@ -8,11 +13,13 @@ const userSchema = new mongoose.Schema({
     email : {
         type : String,
         required : [true, 'Email address is required'],
-        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+        lowercase : true,
+        trim : true,
+        match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Please fill a valid email address']
     },
     password : {
         type : String,
-        required : true
+        select : false
     },
     weight : {
         type : Number,

@@ -1,13 +1,18 @@
 import { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+    sendEmailVerification,
+    signOut,
+    signInWithEmailAndPassword
+} from "firebase/auth";
 
-import '../css/Login.css';
+import { auth, isFirebaseConfigured } from "../firebase";
+import { createProfile } from "../api";
+import "../css/Login.css";
 
 const Login = () => {
     const navigate = useNavigate();
-    const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-
+    const location = useLocation();
     const [formData, setFormData] = useState({
         email: "",
         password: ""
@@ -15,6 +20,8 @@ const Login = () => {
 
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const [verificationUser, setVerificationUser] = useState(null);
+    const [notice, setNotice] = useState(location.state?.notice || "");
 
     const handleChange = (e) => {
         setFormData({
@@ -27,24 +34,70 @@ const Login = () => {
         e.preventDefault();
 
         setError("");
+        setNotice("");
+        setVerificationUser(null);
         setLoading(true);
 
         try {
-            const response = await axios.post(
-                `${VITE_BACKEND_URL}/api/auth/login`,
-                formData
+            const credential = await signInWithEmailAndPassword(
+                auth,
+                formData.email,
+                formData.password
             );
 
-            const { token } = response.data;
+            await credential.user.reload();
 
-            localStorage.setItem("token", token);
+            if (!credential.user.emailVerified) {
+                let verificationMessage =
+                    "Your email is not verified. We sent another verification link; check your inbox before signing in.";
 
+                try {
+                    await sendEmailVerification(credential.user);
+                } catch (verificationError) {
+                    verificationMessage =
+                        `Your email is not verified. Please use the verification link we previously sent. ` +
+                        `We could not resend it: ${verificationError.message}`;
+                }
+
+                await signOut(auth);
+                setError(verificationMessage);
+                return;
+            }
+
+            await createProfile(credential.user, {
+                name: credential.user.displayName || formData.email.split("@")[0]
+            }, true);
             navigate("/dashboard");
 
-        } catch (error) {
+        } catch (submitError) {
+            if (submitError.response?.data?.code === "EMAIL_VERIFICATION_REQUIRED") {
+                setVerificationUser(auth.currentUser);
+                setError(submitError.response.data.message);
+            } else {
+                setError(
+                    submitError.response?.data?.message ||
+                    "Sign-in failed. Check your email and password, then try again."
+                );
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleResendVerification = async () => {
+        if (!verificationUser) return;
+
+        setError("");
+        setNotice("");
+        setLoading(true);
+
+        try {
+            await sendEmailVerification(verificationUser);
+            setNotice("Verification email sent. Verify your address, then sign in again.");
+        } catch (verificationError) {
             setError(
-                error.response?.data?.message ||
-                "Login failed. Please try again."
+                verificationError.message ||
+                "Could not send the verification email. Please try again."
             );
         } finally {
             setLoading(false);
@@ -53,7 +106,8 @@ const Login = () => {
 
     return (
         <div className="login-container">
-            <h1>Login</h1>
+            <span className="auth-eyebrow">FOODNREP WELLNESS JOURNAL</span>
+            <h1>Welcome back</h1>
 
             <form onSubmit={handleSubmit}>
 
@@ -79,15 +133,36 @@ const Login = () => {
                     />
                 </div>
 
-                {error && (
-                    <p className="error">{error}</p>
+                {!isFirebaseConfigured && (
+                    <p className="error" role="alert">
+                        Firebase is not configured. Add the VITE_FIREBASE_* values to the client environment.
+                    </p>
                 )}
 
-                <button type="submit" disabled={loading}>
-                    {loading ? "Logging in..." : "Login"}
+                {error && (
+                    <p className="error" role="alert">{error}</p>
+                )}
+
+                {notice && (
+                    <p className="auth-notice" role="status">{notice}</p>
+                )}
+
+                <button type="submit" disabled={loading || !isFirebaseConfigured}>
+                    {loading ? "Signing in..." : "Sign in"}
                 </button>
 
             </form>
+
+            {verificationUser && (
+                <button
+                    className="verification-button"
+                    type="button"
+                    onClick={handleResendVerification}
+                    disabled={loading}
+                >
+                    Resend verification email
+                </button>
+            )}
 
             <p>
                 Don't have an account?{" "}
@@ -95,7 +170,7 @@ const Login = () => {
                     type="button"
                     onClick={() => navigate("/register")}
                 >
-                    Register
+                    Create account
                 </button>
             </p>
         </div>

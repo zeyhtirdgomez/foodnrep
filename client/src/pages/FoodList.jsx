@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios, { getFirebaseIdToken } from "../api";
 import { useNavigate } from "react-router-dom";
 
 import FoodCard from "../components/FoodCard";
@@ -22,7 +22,7 @@ const FoodList = () => {
             setLoading(true);
             setError("");
 
-            const token = localStorage.getItem("token");
+            const token = await getFirebaseIdToken();
 
             const url = date === "" ?
                 `${VITE_BACKEND_URL}/api/foods`:
@@ -54,7 +54,7 @@ const FoodList = () => {
 
     const handleDelete = async (id) => {
         try {
-            const token = localStorage.getItem("token");
+            const token = await getFirebaseIdToken();
 
             await axios.delete(
                 `${VITE_BACKEND_URL}/api/foods/${id}`,
@@ -84,13 +84,17 @@ const FoodList = () => {
             <div className="food-list-header">
                 
                 <div className='header'>
-                    <h1>Today's Food</h1>
                     <div>
+                        <h1>Food, made mindful.</h1>
+                    </div>
+                    <div>
+                        <label className="visually-hidden" htmlFor="food-date">Filter food by date</label>
                         <input type="date"
+                            id="food-date"
                             value={date}
                             onChange={e => setDate(e.target.value)}
                         />
-                        <button onClick={() => fetchFoods(date)} />
+                        <button onClick={() => fetchFoods(date)}>Show date</button>
                     </div>   
                 </div>
             </div>
@@ -100,13 +104,13 @@ const FoodList = () => {
                 <button
                     onClick={() => navigate("/foods/manual-add")}
                 >
-                    Manual Add
+                    <span aria-hidden="true">+</span> Add food
                 </button>
 
                 <button
                     onClick={() => navigate("/foods/auto-add")}
                 >
-                    Auto Add
+                    Find food automatically
                 </button>
 
             </div>

@@ -1,13 +1,17 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {
+    createUserWithEmailAndPassword,
+    sendEmailVerification,
+    signOut,
+    updateProfile
+} from "firebase/auth";
 
-import '../css/Register.css';
+import { auth, isFirebaseConfigured } from "../firebase";
+import "../css/Register.css";
 
 const Register = () => {
     const navigate = useNavigate();
-    const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-    
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -33,22 +37,28 @@ const Register = () => {
         setLoading(true);
 
         try {
-            await axios.post(
-                `${VITE_BACKEND_URL}/api/auth/register`,
-                {
-                    name: formData.name,
-                    email: formData.email,
-                    password: formData.password,
-                    weight: Number(formData.weight),
-                    height: Number(formData.height)
-                }
+            const credential = await createUserWithEmailAndPassword(
+                auth,
+                formData.email,
+                formData.password
             );
+            await updateProfile(credential.user, { displayName: formData.name });
+            let verificationNotice =
+                "Your account is created. Verify your email from the link we sent, then sign in.";
 
-            navigate("/");
+            try {
+                await sendEmailVerification(credential.user);
+            } catch (verificationError) {
+                verificationNotice =
+                    `Your account is created, but we could not send a verification email: ${verificationError.message}`;
+            }
+            await signOut(auth);
+            navigate("/", { state: { notice: verificationNotice } });
 
-        } catch (error) {
+        } catch (submitError) {
             setError(
-                error.response?.data?.message ||
+                submitError.response?.data?.message ||
+                submitError.message ||
                 "Registration failed. Please try again."
             );
         } finally {
@@ -58,7 +68,8 @@ const Register = () => {
 
     return (
         <div className="register-container pages">
-            <h1>Register</h1>
+            <span className="auth-eyebrow">A FRESH START</span>
+            <h1>Create your account</h1>
 
             <form onSubmit={handleSubmit}>
 
@@ -119,12 +130,18 @@ const Register = () => {
                     />
                 </div>
 
-                {error && (
-                    <p className="error">{error}</p>
+                {!isFirebaseConfigured && (
+                    <p className="error" role="alert">
+                        Firebase is not configured. Add the VITE_FIREBASE_* values to the client environment.
+                    </p>
                 )}
 
-                <button type="submit" disabled={loading}>
-                    {loading ? "Registering..." : "Register"}
+                {error && (
+                    <p className="error" role="alert">{error}</p>
+                )}
+
+                <button type="submit" disabled={loading || !isFirebaseConfigured}>
+                    {loading ? "Creating account..." : "Create account"}
                 </button>
 
             </form>
@@ -135,7 +152,7 @@ const Register = () => {
                     type="button"
                     onClick={() => navigate("/")}
                 >
-                    Login
+                    Sign in
                 </button>
             </p>
         </div>

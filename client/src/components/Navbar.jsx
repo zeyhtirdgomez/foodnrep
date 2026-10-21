@@ -1,43 +1,43 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
 
-import '../css/Navbar.css';
+import { auth } from "../firebase";
+import "../css/Navbar.css";
 const Navbar = () => {
     const navigate = useNavigate();
+    const [logoutError, setLogoutError] = useState("");
 
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        navigate("/");
+    const handleLogout = async () => {
+        setLogoutError("");
+
+        try {
+            await signOut(auth);
+            navigate("/");
+        } catch (error) {
+            setLogoutError(error.message || "Could not sign out. Please try again.");
+        }
     };
 
     return (
-        <nav className="navbar">
-
+        <nav className="navbar" aria-label="Main navigation">
             <div className="navbar-brand">
                 <Link to="/dashboard">
-                    Calorie Tracker
+                    <span className="brand-mark" aria-hidden="true">f</span>
+                    <span>food<span className="brand-accent">n</span>rep</span>
                 </Link>
             </div>
 
             <div className="navbar-links">
-
-                <Link to="/workout">
-                    Workout
-                </Link>
-
-                <Link to="/exercises">
-                    Exercises
-                </Link>
-
-                <Link to="/foods">
-                    Foods
-                </Link>
-
+                <NavLink to="/dashboard">Overview</NavLink>
+                <NavLink to="/workout">Discover</NavLink>
+                <NavLink to="/exercises">Movement</NavLink>
+                <NavLink to="/foods">Food journal</NavLink>
                 <button onClick={handleLogout}>
-                    Logout
+                    Sign out
                 </button>
-
             </div>
-
+            {logoutError && <span role="alert">{logoutError}</span>}
         </nav>
     );
 };

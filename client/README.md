@@ -1,16 +1,26 @@
-# React + Vite
+# FoodnRep client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Firebase Authentication setup
 
-Currently, two official plugins are available:
+1. Create or select a Firebase project and add a Web app.
+2. In Firebase Console, enable **Authentication → Sign-in method → Email/Password**.
+3. Add `localhost` and your deployed client domain to **Authentication → Settings → Authorized domains**.
+4. Copy `.env.example` to `.env` in this directory and fill in the Firebase Web app config values and backend URL.
+5. Start the client with `npm run dev`.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The Firebase Web config is intended for client-side use. Do not put Firebase Admin service-account credentials in the client or commit them.
 
-## React Compiler
+## Authentication flow
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Firebase creates and signs in email/password accounts in the browser.
+- Users must verify their email before sign-in grants access to the app.
+- The client sends the Firebase ID token as a Bearer token to the API. The shared Axios interceptor refreshes the token when needed.
+- After Firebase email verification, `POST /api/auth/register` creates the FoodnRep profile or links a matching legacy profile.
+- Existing food and exercise records stay attached to their MongoDB user profile when that profile is linked.
 
-## Expanding the ESLint configuration
+For API verification and service-account setup, see [`../server/README.md`](../server/README.md).
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Other commands
+
+- `npm run lint` checks the client.
+- `npm run build` creates a production build in `dist`.

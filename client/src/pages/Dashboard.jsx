@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios, { getFirebaseIdToken } from "../api";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
-    LineChart,
-    Line,
+    BarChart,
+    Bar,
     XAxis,
     YAxis,
     CartesianGrid,
@@ -15,14 +15,15 @@ import {
 } from "recharts";
 
 import Navbar from "../components/Navbar";
-import '../css/Dashboard.css'
+import { auth } from "../firebase";
+import "../css/Dashboard.css";
 
 const Dashboard = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-    const token = localStorage.getItem("token");
+    const token = auth?.currentUser;
 
     const [exerciseCount, setExerciseCount] = useState(0);
     const [totalCalories, setTotalCalories] = useState(0);
@@ -70,7 +71,6 @@ const Dashboard = () => {
 
         } catch (error) {
             if (error.response?.status === 401) {
-                localStorage.removeItem("token");
                 navigate("/");
                 return;
             }
@@ -86,7 +86,7 @@ const Dashboard = () => {
 
     const fetchMonthlyActivity = async () => {
         try {
-            const token = localStorage.getItem("token");
+            const token = await getFirebaseIdToken();
 
             const response = await axios.get(
                 `${BACKEND_URL}/api/dashboard/monthly`,
@@ -125,90 +125,122 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard">
-
             <Navbar />
 
             <main className="dashboard-content">
-
-                <h1>Dashboard</h1>
+                <header className="dashboard-heading">
+                    <div>
+                        <span className="eyebrow">YOUR WELLNESS JOURNAL</span>
+                        <h1>A little progress, every day.</h1>
+                        <p>A gentle snapshot of the habits you have been building.</p>
+                    </div>
+                    <div className="dashboard-actions">
+                        <button type="button" onClick={() => navigate("/foods/manual-add")}>
+                            Log food
+                        </button>
+                        <button type="button" onClick={() => navigate("/exercises/add")}>
+                            Add exercise
+                        </button>
+                    </div>
+                </header>
 
                 {error && (
-                    <p className="error">{error}</p>
+                    <p className="error" role="alert">{error}</p>
                 )}
 
                 <section className="summary-cards">
-
                     <div className="summary-card">
-                        <h2>Total Exercise Today</h2>
-
-                        <p>
+                        <span className="summary-icon" aria-hidden="true">✳</span>
+                        <h2>Exercise entries</h2>
+                        <p className="summary-value">
                             {loading ? "..." : exerciseCount}
                         </p>
-
-                        <span>exercises</span>
+                        <span>logged in your journal</span>
                     </div>
 
                     <div className="summary-card">
-                        <h2>Total Calories Today</h2>
-
-                        <p>
+                        <span className="summary-icon summary-icon-food" aria-hidden="true">◌</span>
+                        <h2>Calories logged</h2>
+                        <p className="summary-value">
                             {loading
                                 ? "..."
                                 : Math.round(totalCalories)}
                         </p>
-
-                        <span>kcal</span>
+                        <span>kcal across your food entries</span>
                     </div>
-
                 </section>
 
                 <section className="monthly-activity">
-
-                    <h2>Monthly Activity</h2>
-
+                    <div className="section-heading">
+                        <div>
+                            <span className="eyebrow">YOUR MONTH AT A GLANCE</span>
+                            <h2>Daily activity</h2>
+                            <p>Food and exercise entries, day by day.</p>
+                        </div>
+                        <span className="month-label">
+                            {new Intl.DateTimeFormat(undefined, {
+                                month: "long",
+                                year: "numeric"
+                            }).format(new Date())}
+                        </span>
+                    </div>
                     <div className="chart-container">
-                        <ResponsiveContainer width="100%" height={400}>
-                            <LineChart data={Array.isArray(monthlyData) ? monthlyData : []}>
-                                <CartesianGrid strokeDasharray="3 3" />
-
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart
+                                data={Array.isArray(monthlyData) ? monthlyData : []}
+                                margin={{ top: 12, right: 8, left: -18, bottom: 4 }}
+                                barGap={5}
+                                barCategoryGap="28%"
+                            >
+                                <CartesianGrid vertical={false} stroke="#e9eee9" />
                                 <XAxis
                                     dataKey="date"
-                                    label={{
-                                        value: "Day",
-                                        position: "insideBottom",
-                                        offset: -5
-                                    }}
+                                    axisLine={false}
+                                    tickLine={false}
+                                    tick={{ fill: "#89958a", fontSize: 12 }}
+                                    tickMargin={12}
+                                    interval={Math.max(0, Math.ceil(monthlyData.length / 8) - 1)}
                                 />
-
                                 <YAxis
                                     allowDecimals={false}
+                                    axisLine={false}
+                                    tickLine={false}
+                                    tick={{ fill: "#89958a", fontSize: 12 }}
+                                    width={38}
                                 />
-
-                                <Tooltip />
-
-                                <Legend />
-
-                                <Line
-                                    type="monotone"
+                                <Tooltip
+                                    cursor={{ fill: "#f1f5ef" }}
+                                    contentStyle={{
+                                        border: "1px solid #e5ebe3",
+                                        borderRadius: 12,
+                                        boxShadow: "0 8px 24px rgba(37, 56, 43, 0.08)"
+                                    }}
+                                    labelFormatter={(day) => `Day ${day}`}
+                                />
+                                <Legend
+                                    verticalAlign="top"
+                                    align="right"
+                                    iconType="circle"
+                                    iconSize={8}
+                                    wrapperStyle={{ paddingBottom: 18, fontSize: 12 }}
+                                />
+                                <Bar
                                     dataKey="exercises"
-                                    name="Exercises"
-                                    stroke="#0F2645"
+                                    name="Exercise entries"
+                                    fill="#66866d"
+                                    radius={[5, 5, 0, 0]}
                                 />
-
-                                <Line
-                                    type="monotone"
+                                <Bar
                                     dataKey="foods"
-                                    name="Food Records"
-                                    stroke="#c22586"
+                                    name="Food entries"
+                                    fill="#d59a70"
+                                    radius={[5, 5, 0, 0]}
                                 />
-                            </LineChart>
+                            </BarChart>
                         </ResponsiveContainer>
                     </div>
-
                 </section>
-
             </main>
-
         </div>
     );
 };
