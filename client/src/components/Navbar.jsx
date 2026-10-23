@@ -79,6 +79,7 @@ const Navbar = () => {
                 id="navbar-links"
             >
                 <NavLink to="/dashboard" onClick={() => setIsMenuOpen(false)}>Overview</NavLink>
+                <NavLink to="/profile" onClick={() => setIsMenuOpen(false)}>Health profile</NavLink>
                 <NavLink to="/workout" onClick={() => setIsMenuOpen(false)}>Discover</NavLink>
                 <NavLink to="/exercises" onClick={() => setIsMenuOpen(false)}>Movement</NavLink>
                 <NavLink to="/foods" onClick={() => setIsMenuOpen(false)}>Food journal</NavLink>

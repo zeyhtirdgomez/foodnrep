@@ -1,0 +1,312 @@
+.profile-page {
+    min-height: 100vh;
+    background: var(--wellness-bg);
+}
+
+.profile-container {
+    width: min(1080px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 48px 0 72px;
+}
+
+.profile-heading {
+    margin-bottom: 30px;
+}
+
+.profile-eyebrow {
+    display: block;
+    color: var(--wellness-green);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+}
+
+.profile-heading h1 {
+    margin: 8px 0 6px;
+    color: var(--wellness-ink);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    line-height: 1.15;
+}
+
+.profile-heading p,
+.profile-bmi-note,
+.profile-target-note {
+    color: var(--wellness-muted);
+}
+
+.profile-heading p {
+    margin: 0;
+}
+
+.profile-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+    gap: 20px;
+}
+
+.profile-card {
+    min-width: 0;
+    padding: 28px;
+    background: var(--wellness-surface);
+    border: 1px solid var(--wellness-border);
+    border-radius: 18px;
+    box-shadow: var(--wellness-shadow);
+}
+
+.profile-details {
+    grid-row: span 2;
+}
+
+.profile-card-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.profile-card h2 {
+    margin: 5px 0 0;
+    color: var(--wellness-ink);
+    font-size: 1.35rem;
+}
+
+.profile-avatar {
+    display: grid;
+    width: 48px;
+    height: 48px;
+    place-items: center;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--wellness-green-soft);
+    color: var(--wellness-green-dark);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.profile-name {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin: 0 0 22px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--wellness-border);
+}
+
+.profile-name span,
+.profile-field-hint {
+    color: var(--wellness-muted);
+    font-size: 0.84rem;
+}
+
+.profile-name strong {
+    color: var(--wellness-ink);
+    font-size: 1.05rem;
+}
+
+.profile-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.profile-fields label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: var(--wellness-ink);
+    font-size: 0.9rem;
+    font-weight: 650;
+}
+
+.profile-fields label span {
+    color: var(--wellness-muted);
+    font-weight: 400;
+}
+
+.profile-fields input {
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 12px;
+    color: var(--wellness-ink);
+    background: #fff;
+    border: 1px solid var(--wellness-border);
+    border-radius: 10px;
+}
+
+.profile-fields input:focus {
+    border-color: var(--wellness-green);
+}
+
+.profile-field-hint {
+    margin: 11px 0 22px;
+}
+
+.profile-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.profile-form-actions button {
+    min-height: 44px;
+    padding: 0 18px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.profile-form-actions button:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+.profile-save {
+    background: var(--wellness-green-dark);
+    color: #fff;
+}
+
+.profile-save:hover:not(:disabled) {
+    background: var(--wellness-green);
+}
+
+.profile-cancel {
+    background: #fff;
+    border-color: var(--wellness-border) !important;
+    color: var(--wellness-ink);
+}
+
+.profile-bmi-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.profile-bmi-value {
+    margin: 12px 0 0;
+    color: var(--wellness-ink);
+    font-size: clamp(3.5rem, 8vw, 5rem);
+    font-weight: 750;
+    line-height: 1;
+}
+
+.profile-bmi-category {
+    margin: 10px 0 0;
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: var(--wellness-green-soft);
+    color: var(--wellness-green-dark);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.profile-bmi-category.bmi-underweight {
+    background: #edf2fb;
+    color: #536b9b;
+}
+
+.profile-bmi-category.bmi-overweight {
+    background: #fff4df;
+    color: #946d24;
+}
+
+.profile-bmi-category.bmi-obese {
+    background: #fbeceb;
+    color: #a94e4e;
+}
+
+.profile-bmi-note {
+    margin: 20px 0 0;
+    font-size: 0.82rem;
+}
+
+.profile-target-card {
+    grid-column: 1 / -1;
+}
+
+.profile-target-range {
+    margin: 20px 0 0;
+    color: var(--wellness-ink);
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 750;
+}
+
+.profile-target-range span {
+    color: var(--wellness-muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.profile-suggested-target {
+    margin: 9px 0 0;
+    color: var(--wellness-muted);
+}
+
+.profile-suggested-target strong {
+    margin-left: 4px;
+    color: var(--wellness-green-dark);
+}
+
+.profile-target-empty {
+    margin: 20px 0 0;
+    color: var(--wellness-muted);
+}
+
+.profile-target-note {
+    margin: 18px 0 0;
+    font-size: 0.8rem;
+}
+
+.profile-message {
+    margin: 0 0 18px;
+    padding: 12px 15px;
+    border-radius: 10px;
+}
+
+.profile-error {
+    background: #fbeceb;
+    color: var(--wellness-danger);
+}
+
+.profile-success {
+    background: var(--wellness-green-soft);
+    color: var(--wellness-green-dark);
+}
+
+.profile-loading {
+    color: var(--wellness-muted);
+}
+
+@media (max-width: 700px) {
+    .profile-container {
+        padding-top: 34px;
+    }
+
+    .profile-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-details {
+        grid-row: auto;
+    }
+
+    .profile-target-card {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-container {
+        width: min(100% - 28px, 1080px);
+        padding-bottom: 48px;
+    }
+
+    .profile-card {
+        padding: 22px 18px;
+    }
+
+    .profile-fields {
+        grid-template-columns: 1fr;
+    }
+}

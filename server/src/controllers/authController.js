@@ -160,13 +160,33 @@ const updateUser = async (req, res, next) => {
         const { name, weight, height } = req.body;
 
         if (name !== undefined) user.name = name;
-        if (weight !== undefined) user.weight = weight;
-        if (height !== undefined) user.height = height;
+        for (const [field, value] of [["weight", weight], ["height", height]]) {
+            if (value === undefined) continue;
 
-        if (user.weight > 0 && user.height > 0) {
-            user.BMI = user.weight / ((user.height / 100) ** 2);
+            const measurement = typeof value === "number" || typeof value === "string"
+                ? Number(value)
+                : Number.NaN;
+
+            if (!Number.isFinite(measurement) || measurement < 0) {
+                return res.status(400).json({
+                    message: `${field} must be a valid non-negative number.`
+                });
+            }
+
+            user[field] = measurement;
         }
 
+        const BMI = user.weight > 0 && user.height > 0
+            ? user.weight / ((user.height / 100) ** 2)
+            : 0;
+
+        if (!Number.isFinite(BMI)) {
+            return res.status(400).json({
+                message: "The provided height and weight do not produce a valid BMI."
+            });
+        }
+
+        user.BMI = BMI;
         await user.save();
 
         return res.status(200).json({

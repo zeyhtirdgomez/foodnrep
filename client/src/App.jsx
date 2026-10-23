@@ -14,6 +14,7 @@ import ManualAddFood from "./pages/ManualAddFood";
 import AutoAddFood from "./pages/AutoAddFood";
 
 import Workout from "./pages/Workout";
+import Profile from "./pages/Profile";
 
 function App() {
     return (
@@ -24,6 +25,7 @@ function App() {
                     <Route path="/register" element={<Register />} />
 
                     <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
+                    <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
 
                     <Route path="/exercises" element={<RequireAuth><ExerciseList /></RequireAuth>} />
                     <Route path="/exercises/add" element={<RequireAuth><AddExercise /></RequireAuth>} />
