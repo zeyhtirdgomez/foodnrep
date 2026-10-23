@@ -16,6 +16,8 @@ import AutoAddFood from "./pages/AutoAddFood";
 import Workout from "./pages/Workout";
 import Profile from "./pages/Profile";
 
+import NotFound from "./pages/NotFound";
+
 function App() {
     return (
         <BrowserRouter>
@@ -35,6 +37,7 @@ function App() {
                     <Route path="/foods/auto-add" element={<RequireAuth><AutoAddFood /></RequireAuth>} />
 
                     <Route path="/workout" element={<RequireAuth><Workout /></RequireAuth>} />
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
             </AuthProvider>
         </BrowserRouter>

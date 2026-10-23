@@ -1,0 +1,319 @@
+.not-found-page {
+    min-height: 100vh;
+    padding: 0 28px;
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(213, 154, 112, 0.12), transparent 40%),
+        var(--wellness-bg);
+    color: var(--wellness-ink);
+}
+
+.not-found-header {
+    display: flex;
+    max-width: 1120px;
+    min-height: 76px;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--wellness-border);
+}
+
+.not-found-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--wellness-ink);
+    font-size: 1.15rem;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.not-found-brand > span:last-child > span {
+    color: var(--wellness-peach);
+}
+
+.not-found-brand-mark {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border-radius: 11px;
+    background: var(--wellness-green-dark);
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.not-found-code,
+.not-found-kicker {
+    color: var(--wellness-green);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+}
+
+.not-found-code {
+    padding: 7px 10px;
+    border: 1px solid var(--wellness-border);
+    border-radius: 999px;
+}
+
+.not-found-content {
+    width: min(850px, 100%);
+    margin: 0 auto;
+    padding: 48px 0 34px;
+}
+
+.not-found-copy {
+    max-width: 670px;
+    margin: 0 auto 28px;
+    text-align: center;
+}
+
+.not-found-copy h1 {
+    margin: 10px 0;
+    color: var(--wellness-ink);
+    font-size: clamp(2rem, 6vw, 3.1rem);
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+}
+
+.not-found-copy p {
+    max-width: 580px;
+    margin: 0 auto;
+    color: var(--wellness-muted);
+}
+
+.snack-game {
+    padding: 20px;
+    border: 1px solid var(--wellness-border);
+    border-radius: 20px;
+    background: var(--wellness-surface);
+    box-shadow: var(--wellness-shadow);
+}
+
+.snack-game-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 16px;
+}
+
+.snack-game-heading h2 {
+    margin: 2px 0 0;
+    color: var(--wellness-ink);
+    font-size: 1.35rem;
+}
+
+.snack-game-stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.snack-game-stats span {
+    padding: 7px 10px;
+    border-radius: 9px;
+    background: var(--wellness-green-soft);
+    color: var(--wellness-muted);
+    font-size: 0.8rem;
+}
+
+.snack-game-stats strong {
+    margin-left: 3px;
+    color: var(--wellness-green-dark);
+}
+
+.snack-game-chicken-stat {
+    display: inline-flex;
+    min-width: 60px;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.snack-game-chicken-stat img {
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+}
+
+.snack-game-frame {
+    position: relative;
+    overflow: hidden;
+    border-radius: 13px;
+    background: #d9e6df;
+    touch-action: manipulation;
+}
+
+.snack-game-canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 45 / 14;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.snack-game-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: rgba(245, 247, 242, 0.74);
+    text-align: center;
+}
+
+.snack-game-status-mark {
+    padding: 5px 9px;
+    border: 1px solid rgba(73, 106, 81, 0.25);
+    border-radius: 999px;
+    background: rgba(237, 243, 235, 0.9);
+    color: var(--wellness-green-dark);
+    font-size: 0.66rem;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+}
+
+.snack-game-overlay p {
+    margin: 9px 0 12px;
+    color: var(--wellness-ink);
+    font-weight: 700;
+}
+
+.snack-game-overlay button {
+    min-height: 42px;
+    padding: 0 17px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--wellness-green-dark);
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.snack-game-overlay button:hover {
+    background: var(--wellness-green);
+}
+
+.snack-game-overlay button:disabled {
+    cursor: wait;
+    opacity: 0.7;
+}
+
+.snack-game-asset-error,
+.snack-game-asset-status {
+    margin: 10px 0 0;
+    color: var(--wellness-muted);
+    font-size: 0.82rem;
+    text-align: center;
+}
+
+.snack-game-asset-error {
+    color: var(--wellness-danger);
+}
+
+.snack-game-instructions {
+    margin: 13px 2px 0;
+    color: var(--wellness-muted);
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.snack-game-instructions kbd {
+    padding: 2px 5px;
+    border: 1px solid var(--wellness-border);
+    border-radius: 5px;
+    background: #fff;
+    color: var(--wellness-ink);
+    font: inherit;
+}
+
+.not-found-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 11px;
+    margin-top: 22px;
+}
+
+.not-found-actions a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 17px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 150ms ease, transform 150ms ease;
+}
+
+.not-found-actions a:hover {
+    transform: translateY(-1px);
+}
+
+.not-found-primary {
+    background: var(--wellness-green-dark);
+    color: #fff;
+}
+
+.not-found-primary:hover {
+    background: var(--wellness-green);
+}
+
+.not-found-secondary {
+    border-color: var(--wellness-border) !important;
+    background: #fff;
+    color: var(--wellness-ink);
+}
+
+.not-found-secondary:hover {
+    background: var(--wellness-green-soft);
+}
+
+.not-found-footer {
+    padding: 0 0 22px;
+    color: var(--wellness-muted);
+    font-size: 0.78rem;
+    text-align: center;
+}
+
+@media (max-width: 560px) {
+    .not-found-page {
+        padding: 0 16px;
+    }
+
+    .not-found-content {
+        padding-top: 34px;
+    }
+
+    .snack-game {
+        padding: 14px;
+    }
+
+    .snack-game-heading {
+        align-items: flex-start;
+    }
+
+    .snack-game-stats {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .snack-game-canvas {
+        min-height: 140px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .not-found-actions a {
+        transition: none;
+    }
+}
