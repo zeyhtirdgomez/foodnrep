@@ -157,6 +157,21 @@ body {
     transform: none;
 }
 
+.login-container form > button.auth-secondary {
+    width: auto;
+    margin: 12px auto 0;
+    padding: 4px;
+    background: transparent;
+    color: #0F2645;
+    font-size: 14px;
+}
+
+.login-container form > button.auth-secondary:hover {
+    background: transparent;
+    text-decoration: underline;
+    transform: none;
+}
+
 /* =========================
    Register Link
 ========================= */
@@ -203,4 +218,3 @@ body {
         padding: 25px 20px;
     }
 }
-

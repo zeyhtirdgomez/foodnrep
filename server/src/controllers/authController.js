@@ -1,4 +1,7 @@
 import User from "../models/User.js";
+import Food from "../models/Food.js";
+import Exercise from "../models/Exercise.js";
+import firebaseAdminAuth from "../config/firebaseAdmin.js";
 
 const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
@@ -48,6 +51,13 @@ const registerUser = async (req, res, next) => {
         const linkedUser = await User.findOne({ firebaseUid: uid });
 
         if (linkedUser) {
+            if (!linkedUser.isActive) {
+                return res.status(403).json({
+                    code: "ACCOUNT_DEACTIVATED",
+                    message: "This account is deactivated. Reactivate it to continue."
+                });
+            }
+
             return res.status(200).json({
                 message: "Profile is ready.",
                 user: profileResponse(linkedUser)
@@ -200,6 +210,15 @@ const updateUser = async (req, res, next) => {
 
 const deleteUser = async (req, res, next) => {
     try {
+        const authenticationAge = Date.now() / 1000 - req.firebaseUser.auth_time;
+
+        if (!Number.isFinite(authenticationAge) || authenticationAge > 5 * 60) {
+            return res.status(403).json({
+                code: "RECENT_LOGIN_REQUIRED",
+                message: "Confirm your password again before deleting your account."
+            });
+        }
+
         const user = await User.findById(req.user.id);
 
         if (!user) {
@@ -208,9 +227,70 @@ const deleteUser = async (req, res, next) => {
             });
         }
 
+        try {
+            await firebaseAdminAuth.deleteUser(req.user.uid);
+        } catch (error) {
+            if (error.code !== "auth/user-not-found") {
+                return next(error);
+            }
+        }
+
+        await Promise.all([
+            Food.deleteMany({ userId: user._id }),
+            Exercise.deleteMany({ userId: user._id })
+        ]);
         await user.deleteOne();
 
         return res.sendStatus(204);
+    } catch (error) {
+        return next(error);
+    }
+};
+
+const deactivateUser = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found."
+            });
+        }
+
+        user.isActive = false;
+        await user.save();
+
+        return res.status(200).json({
+            message: "Your account has been deactivated."
+        });
+    } catch (error) {
+        return next(error);
+    }
+};
+
+const reactivateUser = async (req, res, next) => {
+    try {
+        if (!req.firebaseUser.email_verified) {
+            return res.status(403).json({
+                code: "EMAIL_VERIFICATION_REQUIRED",
+                message: "Verify your email address before reactivating your account."
+            });
+        }
+
+        const user = await User.findOne({ firebaseUid: req.firebaseUser.uid });
+
+        if (!user) {
+            return res.status(404).json({
+                message: "No FoodnRep account was found for this Firebase account."
+            });
+        }
+
+        user.isActive = true;
+        await user.save();
+
+        return res.status(200).json({
+            message: "Your account has been reactivated."
+        });
     } catch (error) {
         return next(error);
     }
@@ -220,5 +300,7 @@ export {
     getMe,
     registerUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    deactivateUser,
+    reactivateUser
 };

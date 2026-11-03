@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+    EmailAuthProvider,
+    reauthenticateWithCredential,
+    signOut,
+    updatePassword
+} from "firebase/auth";
 import axios from "../api";
 
 import Navbar from "../components/Navbar";
+import { auth } from "../firebase";
 import "../css/Profile.css";
 
 const getBmiCategory = (bmi) => {
@@ -14,6 +22,7 @@ const getBmiCategory = (bmi) => {
 const formatWeight = (weight) => Number(weight).toFixed(1);
 
 const Profile = () => {
+    const navigate = useNavigate();
     const [profile, setProfile] = useState(null);
     const [weight, setWeight] = useState("");
     const [height, setHeight] = useState("");
@@ -21,6 +30,13 @@ const Profile = () => {
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState("");
     const [notice, setNotice] = useState("");
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [passwordChanging, setPasswordChanging] = useState(false);
+    const [accountActionLoading, setAccountActionLoading] = useState(false);
+    const [deleteConfirmation, setDeleteConfirmation] = useState("");
+    const [deletePassword, setDeletePassword] = useState("");
 
     useEffect(() => {
         let active = true;
@@ -107,6 +123,95 @@ const Profile = () => {
             );
         } finally {
             setSaving(false);
+        }
+    };
+
+    const handlePasswordChange = async (event) => {
+        event.preventDefault();
+        setError("");
+        setNotice("");
+
+        if (newPassword !== confirmPassword) {
+            setError("The new passwords do not match.");
+            return;
+        }
+
+        const currentUser = auth?.currentUser;
+        if (!currentUser?.email) {
+            setError("Could not verify your account. Please sign in again.");
+            return;
+        }
+
+        setPasswordChanging(true);
+        try {
+            const credential = EmailAuthProvider.credential(currentUser.email, currentPassword);
+            await reauthenticateWithCredential(currentUser, credential);
+            await updatePassword(currentUser, newPassword);
+            setCurrentPassword("");
+            setNewPassword("");
+            setConfirmPassword("");
+            setNotice("Your password has been changed.");
+        } catch (passwordError) {
+            setError(
+                passwordError.code === "auth/requires-recent-login"
+                    ? "Please sign in again before changing your password."
+                    : passwordError.message || "Could not change your password. Please try again."
+            );
+        } finally {
+            setPasswordChanging(false);
+        }
+    };
+
+    const handleDeactivate = async () => {
+        if (!window.confirm("Deactivate your account? Your data will be kept, and you can reactivate by signing in again.")) {
+            return;
+        }
+
+        setError("");
+        setNotice("");
+        setAccountActionLoading(true);
+        try {
+            await axios.post("/api/auth/deactivate");
+            await signOut(auth);
+            navigate("/", {
+                state: { notice: "Your account is deactivated. Sign in when you are ready to reactivate it." }
+            });
+        } catch (deactivationError) {
+            setError(
+                deactivationError.response?.data?.message ||
+                deactivationError.message ||
+                "Could not deactivate your account. Please try again."
+            );
+        } finally {
+            setAccountActionLoading(false);
+        }
+    };
+
+    const handleDelete = async () => {
+        if (deleteConfirmation !== "DELETE") return;
+
+        setError("");
+        setNotice("");
+        setAccountActionLoading(true);
+        try {
+            const currentUser = auth?.currentUser;
+            if (!currentUser?.email) {
+                throw new Error("Could not verify your account. Please sign in again.");
+            }
+            const credential = EmailAuthProvider.credential(currentUser.email, deletePassword);
+            await reauthenticateWithCredential(currentUser, credential);
+            await currentUser.getIdToken(true);
+            await axios.delete("/api/auth");
+            await signOut(auth);
+            navigate("/", { state: { notice: "Your account and its data have been permanently deleted." } });
+        } catch (deletionError) {
+            setError(
+                deletionError.response?.data?.message ||
+                deletionError.message ||
+                "Could not delete your account. Please try again."
+            );
+        } finally {
+            setAccountActionLoading(false);
         }
     };
 
@@ -237,6 +342,112 @@ const Profile = () => {
                                 Based on the adult BMI range of 18.5–24.9. BMI is a general screening measure,
                                 not a diagnosis or a substitute for professional advice.
                             </p>
+                        </section>
+
+                        <section className="profile-card profile-account-card">
+                            <div>
+                                <span className="profile-eyebrow">ACCOUNT SECURITY</span>
+                                <h2>Change password</h2>
+                            </div>
+                            <form onSubmit={handlePasswordChange}>
+                                <div className="profile-fields">
+                                    <label htmlFor="current-password">
+                                        Current password
+                                        <input
+                                            id="current-password"
+                                            type="password"
+                                            autoComplete="current-password"
+                                            value={currentPassword}
+                                            onChange={(event) => setCurrentPassword(event.target.value)}
+                                            required
+                                            disabled={passwordChanging}
+                                        />
+                                    </label>
+                                    <label htmlFor="new-password">
+                                        New password
+                                        <input
+                                            id="new-password"
+                                            type="password"
+                                            autoComplete="new-password"
+                                            minLength="6"
+                                            value={newPassword}
+                                            onChange={(event) => setNewPassword(event.target.value)}
+                                            required
+                                            disabled={passwordChanging}
+                                        />
+                                    </label>
+                                    <label htmlFor="confirm-password">
+                                        Confirm new password
+                                        <input
+                                            id="confirm-password"
+                                            type="password"
+                                            autoComplete="new-password"
+                                            minLength="6"
+                                            value={confirmPassword}
+                                            onChange={(event) => setConfirmPassword(event.target.value)}
+                                            required
+                                            disabled={passwordChanging}
+                                        />
+                                    </label>
+                                </div>
+                                <p className="profile-field-hint">
+                                    Confirm your current password to change it. Passwords must be at least 6 characters.
+                                </p>
+                                <div className="profile-form-actions">
+                                    <button className="profile-save" type="submit" disabled={passwordChanging}>
+                                        {passwordChanging ? "Changing..." : "Change password"}
+                                    </button>
+                                </div>
+                            </form>
+
+                            <div className="profile-account-actions">
+                                <div>
+                                    <h2>Deactivate account</h2>
+                                    <p>Your profile and journal entries will be kept. You can reactivate by signing in.</p>
+                                    <button
+                                        className="profile-cancel"
+                                        type="button"
+                                        onClick={handleDeactivate}
+                                        disabled={accountActionLoading}
+                                    >
+                                        {accountActionLoading ? "Please wait..." : "Deactivate account"}
+                                    </button>
+                                </div>
+                                <div className="profile-danger-zone">
+                                    <h2>Delete account</h2>
+                                    <p>This permanently deletes your account and food and exercise records. This cannot be undone.</p>
+                                    <label htmlFor="delete-confirmation">
+                                        Type DELETE to confirm
+                                        <input
+                                            id="delete-confirmation"
+                                            type="text"
+                                            value={deleteConfirmation}
+                                            onChange={(event) => setDeleteConfirmation(event.target.value)}
+                                            disabled={accountActionLoading}
+                                        />
+                                    </label>
+                                    <label htmlFor="delete-password">
+                                        Confirm your current password
+                                        <input
+                                            id="delete-password"
+                                            type="password"
+                                            autoComplete="current-password"
+                                            value={deletePassword}
+                                            onChange={(event) => setDeletePassword(event.target.value)}
+                                            required
+                                            disabled={accountActionLoading}
+                                        />
+                                    </label>
+                                    <button
+                                        className="profile-delete"
+                                        type="button"
+                                        onClick={handleDelete}
+                                        disabled={accountActionLoading || deleteConfirmation !== "DELETE" || !deletePassword}
+                                    >
+                                        {accountActionLoading ? "Deleting..." : "Permanently delete account"}
+                                    </button>
+                                </div>
+                            </div>
                         </section>
                     </div>
                 ) : null}

@@ -42,13 +42,20 @@ const Register = () => {
                 formData.email,
                 formData.password
             );
-            await updateProfile(credential.user, { displayName: formData.name });
+            const [profileResult, verificationResult] = await Promise.allSettled([
+                updateProfile(credential.user, { displayName: formData.name }),
+                sendEmailVerification(credential.user)
+            ]);
+
+            if (profileResult.status === "rejected") {
+                throw profileResult.reason;
+            }
+
             let verificationNotice =
                 "Your account is created. Verify your email from the link we sent, then sign in.";
 
-            try {
-                await sendEmailVerification(credential.user);
-            } catch (verificationError) {
+            if (verificationResult.status === "rejected") {
+                const verificationError = verificationResult.reason;
                 verificationNotice =
                     `Your account is created, but we could not send a verification email: ${verificationError.message}`;
             }

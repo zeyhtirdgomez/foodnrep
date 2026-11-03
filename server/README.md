@@ -26,4 +26,6 @@ Protected endpoints continue to use the MongoDB profile ID internally; the middl
 - `POST /api/auth/register` requires `Authorization: Bearer <Firebase ID token>` and accepts profile fields such as `{ "name": "...", "weight": 0, "height": 0 }`.
 - A verified Firebase email is required to create a FoodnRep profile or link an existing profile. Existing profile data and logged food/exercises are retained when linking.
 - All protected API routes reject ID tokens whose `email_verified` claim is false. Firebase passwords are never sent to the API.
-- `GET /api/auth/me`, `PATCH /api/auth`, and `DELETE /api/auth` require a linked FoodnRep profile.
+- `GET /api/auth/me`, `PATCH /api/auth`, `POST /api/auth/deactivate`, and `DELETE /api/auth` require an active linked FoodnRep profile.
+- Deactivation retains the profile and journal data. `POST /api/auth/reactivate` accepts a verified Firebase ID token so the account owner can reactivate after signing in.
+- Account deletion requires recent password confirmation, then removes the Firebase account, FoodnRep profile, and that profile's food and exercise records.

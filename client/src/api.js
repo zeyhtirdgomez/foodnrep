@@ -47,8 +47,8 @@ export const getFirebaseIdToken = async () => {
     return user.getIdToken();
 };
 
-export const createProfile = async (user, profile, forceRefresh = false) => {
-    const idToken = await user.getIdToken(forceRefresh);
+export const createProfile = async (user, profile) => {
+    const idToken = await user.getIdToken();
 
     return profileApi.post("/api/auth/register", profile, {
         headers: {
@@ -56,5 +56,7 @@ export const createProfile = async (user, profile, forceRefresh = false) => {
         }
     });
 };
+
+export const reactivateAccount = () => api.post("/api/auth/reactivate");
 
 export default api;

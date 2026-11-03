@@ -2,12 +2,13 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
     sendEmailVerification,
+    sendPasswordResetEmail,
     signOut,
     signInWithEmailAndPassword
 } from "firebase/auth";
 
 import { auth, isFirebaseConfigured } from "../firebase";
-import { createProfile } from "../api";
+import { createProfile, reactivateAccount } from "../api";
 import "../css/Login.css";
 
 const Login = () => {
@@ -21,6 +22,7 @@ const Login = () => {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [verificationUser, setVerificationUser] = useState(null);
+    const [accountDeactivated, setAccountDeactivated] = useState(false);
     const [notice, setNotice] = useState(location.state?.notice || "");
 
     const handleChange = (e) => {
@@ -36,6 +38,7 @@ const Login = () => {
         setError("");
         setNotice("");
         setVerificationUser(null);
+        setAccountDeactivated(false);
         setLoading(true);
 
         try {
@@ -44,8 +47,6 @@ const Login = () => {
                 formData.email,
                 formData.password
             );
-
-            await credential.user.reload();
 
             if (!credential.user.emailVerified) {
                 let verificationMessage =
@@ -66,12 +67,15 @@ const Login = () => {
 
             await createProfile(credential.user, {
                 name: credential.user.displayName || formData.email.split("@")[0]
-            }, true);
+            });
             navigate("/dashboard");
 
         } catch (submitError) {
             if (submitError.response?.data?.code === "EMAIL_VERIFICATION_REQUIRED") {
                 setVerificationUser(auth.currentUser);
+                setError(submitError.response.data.message);
+            } else if (submitError.response?.data?.code === "ACCOUNT_DEACTIVATED") {
+                setAccountDeactivated(true);
                 setError(submitError.response.data.message);
             } else {
                 setError(
@@ -79,6 +83,52 @@ const Login = () => {
                     "Sign-in failed. Check your email and password, then try again."
                 );
             }
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handlePasswordReset = async () => {
+        setError("");
+        setNotice("");
+
+        if (!formData.email.trim()) {
+            setError("Enter your email address first, then request a password reset.");
+            return;
+        }
+
+        setLoading(true);
+        try {
+            await sendPasswordResetEmail(auth, formData.email.trim());
+            setNotice("If an account exists for that email, a password reset link has been sent.");
+        } catch (resetError) {
+            if (resetError.code === "auth/user-not-found") {
+                setNotice("If an account exists for that email, a password reset link has been sent.");
+            } else {
+                setError(
+                    resetError.message ||
+                    "Could not request a password reset. Please try again."
+                );
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleReactivate = async () => {
+        setError("");
+        setNotice("");
+        setLoading(true);
+
+        try {
+            await reactivateAccount();
+            navigate("/dashboard");
+        } catch (reactivationError) {
+            setError(
+                reactivationError.response?.data?.message ||
+                reactivationError.message ||
+                "Could not reactivate your account. Please try again."
+            );
         } finally {
             setLoading(false);
         }
@@ -150,8 +200,27 @@ const Login = () => {
                 <button type="submit" disabled={loading || !isFirebaseConfigured}>
                     {loading ? "Signing in..." : "Sign in"}
                 </button>
+                <button
+                    className="auth-secondary"
+                    type="button"
+                    onClick={handlePasswordReset}
+                    disabled={loading || !isFirebaseConfigured}
+                >
+                    Forgot password?
+                </button>
 
             </form>
+
+            {accountDeactivated && (
+                <button
+                    className="verification-button"
+                    type="button"
+                    onClick={handleReactivate}
+                    disabled={loading}
+                >
+                    Reactivate account
+                </button>
+            )}
 
             {verificationUser && (
                 <button

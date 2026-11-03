@@ -17,6 +17,8 @@ The Firebase Web config is intended for client-side use. Do not put Firebase Adm
 - The client sends the Firebase ID token as a Bearer token to the API. The shared Axios interceptor refreshes the token when needed.
 - After Firebase email verification, `POST /api/auth/register` creates the FoodnRep profile or links a matching legacy profile.
 - Existing food and exercise records stay attached to their MongoDB user profile when that profile is linked.
+- The sign-in page can send Firebase password-reset emails. From the health profile, users can change their password by confirming their current password.
+- The health profile also supports reversible deactivation and permanent account deletion. Deactivation retains profile and journal data; deletion requires current-password confirmation and removes the Firebase account and associated profile, food, and exercise records.
 
 For API verification and service-account setup, see [`../server/README.md`](../server/README.md).
 

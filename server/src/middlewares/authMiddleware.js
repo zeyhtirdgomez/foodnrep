@@ -24,6 +24,13 @@ const authMiddleware = (req, res, next) => {
                 });
             }
 
+            if (!user.isActive) {
+                return res.status(403).json({
+                    code: "ACCOUNT_DEACTIVATED",
+                    message: "This account is deactivated. Sign in and reactivate it to continue."
+                });
+            }
+
             req.user = {
                 id: user._id.toString(),
                 uid: req.firebaseUser.uid,

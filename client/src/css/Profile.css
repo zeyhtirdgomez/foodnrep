@@ -225,6 +225,74 @@
     grid-column: 1 / -1;
 }
 
+.profile-account-card {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: 24px;
+}
+
+.profile-account-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    padding-top: 22px;
+    border-top: 1px solid var(--wellness-border);
+}
+
+.profile-account-actions h2 {
+    font-size: 1.1rem;
+}
+
+.profile-account-actions p {
+    color: var(--wellness-muted);
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+.profile-danger-zone {
+    padding: 18px;
+    border: 1px solid #f0d6d2;
+    border-radius: 12px;
+    background: #fff7f5;
+}
+
+.profile-danger-zone label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: var(--wellness-ink);
+    font-size: 0.9rem;
+    font-weight: 650;
+}
+
+.profile-danger-zone input {
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid var(--wellness-border);
+    border-radius: 10px;
+}
+
+.profile-delete {
+    min-height: 44px;
+    margin-top: 12px;
+    padding: 0 16px;
+    border: 1px solid #a93c35;
+    border-radius: 10px;
+    background: #a93c35;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.profile-delete:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.profile-delete:hover:not(:disabled) {
+    background: #8d302a;
+}
+
 .profile-target-range {
     margin: 20px 0 0;
     color: var(--wellness-ink);
@@ -293,6 +361,14 @@
 
     .profile-target-card {
         grid-column: auto;
+    }
+
+    .profile-account-card {
+        grid-column: auto;
+    }
+
+    .profile-account-actions {
+        grid-template-columns: 1fr;
     }
 }
 
